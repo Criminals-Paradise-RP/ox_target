@@ -279,3 +279,18 @@ end)
 exportHandler('RemoveTargetBone', function()
     utils.warn('RemoveTargetBone is not supported by ox_target.')
 end)
+
+exportHandler('AddEntityZone', function(name, entities, options, targetoptions)
+    if type(entities) ~= 'table' then entities = { entities } end
+    options = convert(targetoptions)
+
+    for i = 1, #entities do
+        local entity = entities[i]
+
+        if NetworkGetEntityIsNetworked(entity) then
+            api.addEntity(NetworkGetNetworkIdFromEntity(entity), options)
+        else
+            api.addLocalEntity(entity, options)
+        end
+    end
+end)
